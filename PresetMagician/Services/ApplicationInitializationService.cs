@@ -147,10 +147,10 @@ namespace PresetMagician.Services
             var serviceLocator = ServiceLocator.Default;
             var licenseService = serviceLocator.ResolveType<ILicenseService>();
             if (!licenseService.CheckLicense())
-            {
+/*            {
                 LogTo.Debug("No valid license found, showing registration dialog");
                 await StartRegistration();
-            }
+            }*/
 
 
             await base.InitializeAfterShowingShellAsync();
