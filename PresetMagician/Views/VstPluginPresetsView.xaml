@@ -315,7 +315,8 @@
                                                     ItemTemplate="{StaticResource CharacteristicTemplate}"
                                                     DisplayMemberPath="EffectiveCharacteristicName"
                                                     ItemsSource="{Binding GlobalCharacteristicCollection}"
-                                                    SelectedItemsOverride="{Binding SelectedPreset.Metadata.Characteristics}" />
+                                                    Command="{Binding ChangeCharacteristics}"
+                                                    SelectedItemsOverride="{Binding SelectedCharacteristics}" />
                                 <Button Grid.Column="1" Command="{Binding Revert}" CommandParameter="Characteristics"
                                         Content="{iconPacks:FontAwesome Kind=UndoAltSolid}"
                                         ToolTip="Revert to imported characteristics"
@@ -334,7 +335,8 @@
                                                     ItemTemplate="{StaticResource TypeTemplate}"
                                                     DisplayMemberPath="EffectiveFullTypeName"
                                                     ItemsSource="{Binding GlobalTypeCollection}"
-                                                    SelectedItemsOverride="{Binding SelectedPreset.Metadata.Types}" />
+                                                    Command="{Binding ChangeTypes}"
+                                                    SelectedItemsOverride="{Binding SelectedTypes}" />
                                 <Button Grid.Column="1" Command="{Binding Revert}" CommandParameter="Types"
                                         VerticalAlignment="Center" Margin="0"
                                         Content="{iconPacks:FontAwesome Kind=UndoAltSolid}"
