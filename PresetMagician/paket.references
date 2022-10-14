@@ -22,7 +22,7 @@ Simple-MAPI.NET
 System.ValueTuple
 System.Threading.Tasks.Extensions
 Be.Windows.Forms.HexBox
-SQLitePCLRaw.bundle_e_sqlite3 
+SQLitePCLRaw.bundle_e_sqlite3
 DataGridExtensions
 EntityFramework
 System.Data.SQLite
