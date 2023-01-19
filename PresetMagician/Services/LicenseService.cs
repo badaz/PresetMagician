@@ -47,26 +47,7 @@ namespace PresetMagician.Services
 
         public int GetPresetExportLimit()
         {
-            if (CurrentLicense.Type == LicenseType.Standard)
-            {
-                return 0;
-            }
-
-            if (!CurrentLicense.AdditionalAttributes.Contains("PresetExportLimit"))
-            {
-                return _defaultTrialPresetExportLimit;
-            }
-            else
-            {
-                var presetExportLimit = 0;
-                if (!Int32.TryParse(CurrentLicense.AdditionalAttributes.Get("PresetExportLimit"),
-                    out presetExportLimit))
-                {
-                    return presetExportLimit;
-                }
-            }
-
-            return _defaultTrialPresetExportLimit;
+            return 0;
         }
 
         public List<IValidationFailure> ValidateLicense(string filePath)

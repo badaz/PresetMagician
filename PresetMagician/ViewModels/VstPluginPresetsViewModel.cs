@@ -84,8 +84,9 @@ namespace PresetMagician.ViewModels
 
             AddToExportListCommand = new TaskCommand(OnAddToExportListCommandExecute, AddToExportListCommandCanExecute);
 
-
             Revert = new Command<string>(OnRevertExecute);
+            ChangeTypes = new Command<string>(OnChangeTypes);
+            ChangeCharacteristics = new Command<string>(OnChangeCharacteristics);
         }
 
         private void SelectedPresetsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -104,6 +105,9 @@ namespace PresetMagician.ViewModels
         public Preset SelectedPreset { get; set; }
         public ObservableCollection<Preset> SelectedPresets { get; set; } = new EditableCollection<Preset>();
         public bool HasSelectedPreset { get; set; }
+        public FastObservableCollection<Type> SelectedTypes { get; set; } = new FastObservableCollection<Type>();
+        public FastObservableCollection<Characteristic> SelectedCharacteristics { get; set; } = new FastObservableCollection<Characteristic>();
+        private bool BypassAssignChoices = false;
 
         #endregion
 
@@ -321,8 +325,39 @@ namespace PresetMagician.ViewModels
 
         #region Command Revert
 
-        public Command<string> Revert { get; }
+        public Command<string> ChangeTypes { get; set; }
 
+        private void OnChangeTypes()
+        {
+            if (BypassAssignChoices)
+            {
+                return;
+            }
+
+            foreach (var preset in SelectedPresets)
+            {
+                preset.Metadata.Types.SynchronizeCollection(
+                        SelectedTypes);
+            }
+        }
+
+        public Command<string> ChangeCharacteristics { get; set; }
+
+        private void OnChangeCharacteristics()
+        {
+            if (BypassAssignChoices)
+            {
+                return;
+            }
+
+            foreach (var preset in SelectedPresets)
+            {
+                preset.Metadata.Characteristics.SynchronizeCollection(
+                        SelectedCharacteristics);
+            }
+        }
+
+        public Command<string> Revert { get; }
 
         private void OnRevertExecute(string parameter)
         {
@@ -380,7 +415,21 @@ namespace PresetMagician.ViewModels
             {
                 HasSelectedPreset = SelectedPreset != null;
                 LoadPresetCommand.RaiseCanExecuteChanged();
+
+                var NewSelectedPreset = e.NewValue;
+                if (NewSelectedPreset is Preset)
+                {
+                    ResetChoicesToSelectedPresetChoices((Preset)NewSelectedPreset);
+                }
             }
+        }
+
+        private void ResetChoicesToSelectedPresetChoices(Preset preset)
+        {
+            BypassAssignChoices = true;
+            SelectedTypes.SynchronizeCollection(preset.Metadata.Types);
+            SelectedCharacteristics.SynchronizeCollection(preset.Metadata.Characteristics);
+            BypassAssignChoices = false;
         }
 
         public IUserEditable GetTrackedModel()
